@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using Data;
 
@@ -27,6 +28,13 @@ namespace Injector
         public void AddTask(TaskData task)
         {
             Tasks.Add(task);
+            SaveTasks();
+        }
+
+        public void UpdateTask(int id, TaskData data)
+        {
+            var taskToUpdate = Tasks.Where(task => task.Id == id).ToArray()[0];
+            taskToUpdate = data;
             SaveTasks();
         }
     }

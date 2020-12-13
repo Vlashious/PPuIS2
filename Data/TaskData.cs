@@ -3,8 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Data
 {
-    class TaskData
+    public class TaskData
     {
+        [Required]
+        public int Id { get; set; }
+
         [Required]
         [MinLength(3)]
         public string Name { get; set; }

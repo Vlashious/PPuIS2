@@ -1,0 +1,37 @@
+@page "/task/{id:int}"
+@inject TasksManager _taskManager
+@inject NavigationManager _nav
+<div class="container">
+    <h2>
+        @_task.Name
+    </h2>
+    <h4>Is finished</h4>
+    <input type="checkbox" @bind-value=_task.IsFinished>
+
+    <div class="container">
+        <button class="btn btn-primary" @onclick=NavigateToEdit>Edit</button>
+        <button class="btn btn-primary">Delete</button>
+        <button class="btn btn-light">Done</button>
+        <button class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public int Id { get; set; }
+
+    private TaskData _task;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _task = _taskManager.Tasks.First(task => task.Id == Id);
+    }
+
+    private void NavigateToEdit()
+    {
+        _nav.NavigateTo($"/edit_task/{Id}");
+    }
+
+}

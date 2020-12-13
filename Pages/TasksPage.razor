@@ -2,34 +2,45 @@
 @inject TasksManager _tasksManager
 @inject NavigationManager _nav
 <div class="container">
-    <h1>Tasks for today</h1>
-    <ul>
-        @foreach (var task in _tasksManager.Tasks)
-        {
-            <li>
-                @task.Name
-                @task.Date
-            </li>
-        }
-    </ul>
+    <h1>Tasks for
+        <input type="date" @onchange="(arg) => FilterTasks((string)arg.Value)" />
+    </h1>
+    @foreach (var task in _tasks)
+    {
+        <button class="btn btn-lg btn-primary btn-block m-2" @onclick="() => NavigateToTask(task.Id)">@task.Name</button>
+    }
 
-    <div class="container">
-        <button class="btn btn-primary" @onclick=NavigateToAddTask>Add task</button>
-        <button class="btn btn-primary">Change day</button>
-        <button class="btn btn-danger">Cancel</button>
+        <div class="container">
+            <button class="btn btn-primary" @onclick=NavigateToAddTask>Add task</button>
+            <button class="btn btn-danger">Cancel</button>
+        </div>
     </div>
-</div>
 
-@code
-{
+
+    @code
+    {
+    private string _date = DateTime.Now.ToShortDateString();
+    private List<TaskData> _tasks = new();
+
     protected override async Task OnInitializedAsync()
     {
         await base.OnInitializedAsync();
         _tasksManager.LoadTasks();
+        _tasks = _tasksManager.Tasks.Where(task => task.Date.ToShortDateString() == _date).ToList();
     }
 
     private void NavigateToAddTask()
     {
         _nav.NavigateTo("/add_task");
+    }
+
+    private void NavigateToTask(int id)
+    {
+        _nav.NavigateTo($"/task/{id}");
+    }
+
+    private void FilterTasks(string date)
+    {
+        _tasks = _tasksManager.Tasks.Where(task => task.Date.ToString("yyyy-MM-dd") == date).ToList();
     }
 }
