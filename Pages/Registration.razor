@@ -1,0 +1,30 @@
+@page "/registration"
+
+@inject NavigationManager _navManager
+@inject AuthorizationManager _authorizationManager
+
+<div class="container">
+    <h1>
+        Registration
+    </h1>
+    <EditForm Model=@password OnValidSubmit=@HandleSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText id="password" @bind-Value="password.Password" />
+        <div class="mt-1">
+            <button type="submit" class="btn btn-primary">Register</button>
+            <button type="reset" class="btn btn-danger">Exit</button>
+        </div>
+    </EditForm>
+</div>
+
+@code {
+    private PasswordData password = new();
+
+    private void HandleSubmit()
+    {
+        _authorizationManager.Authorize(password.Password);
+        _navManager.NavigateTo("/");
+    }
+}

@@ -1,0 +1,34 @@
+@page "/"
+@inject AuthorizationManager _authorizationManager
+@inject TasksManager _tasksManager
+@inject NavigationManager _nav
+
+<div class="container">
+    @if (_authorizationManager.IsAuthorized)
+    {
+        <button type="button" class="btn btn-primary btn-lg btn-block" @onclick=NavigateToTasks>Task list</button>
+        <button type="button" class="btn btn-primary btn-lg btn-block">Exit</button>
+    }
+    else
+    {
+        <h1>You are unauthorized.</h1>
+    }
+</div>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+        if (!_authorizationManager.IsAuthorized)
+        {
+            await Task.Delay(1000);
+            _nav.NavigateTo("/registration");
+        }
+    }
+
+    private void NavigateToTasks()
+    {
+        _nav.NavigateTo("/tasks");
+    }
+}

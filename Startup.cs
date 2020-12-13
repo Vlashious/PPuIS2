@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Service;
 
 namespace PPuIS2
 {
@@ -28,21 +27,8 @@ namespace PPuIS2
             services.AddRazorPages();
             services.AddServerSideBlazor();
 
-            services.AddSingleton<ICommand, TasksList>();
-
-            services.AddSingleton<ITasksCommand, AddTask>();
-            services.AddSingleton<ITasksCommand, SelectTask>();
-            services.AddSingleton<ITasksCommand, ChangeDay>();
-
-            services.AddSingleton<ITaskCommand, EditTask>();
-            services.AddSingleton<ITaskCommand, UpdateFinish>();
-            services.AddSingleton<ITaskCommand, DeleteTask>();
-
-            services.AddSingleton<Login>();
-            services.AddSingleton<MainController>();
-            //services.AddSingleton<Password>();
-            services.AddSingleton<PasswordRepository>();
-            services.AddSingleton<Registration>();
+            services.AddSingleton<AuthorizationManager>();
+            services.AddSingleton<TasksManager>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,0 +1,35 @@
+@page "/tasks"
+@inject TasksManager _tasksManager
+@inject NavigationManager _nav
+<div class="container">
+    <h1>Tasks for today</h1>
+    <ul>
+        @foreach (var task in _tasksManager.Tasks)
+        {
+            <li>
+                @task.Name
+                @task.Date
+            </li>
+        }
+    </ul>
+
+    <div class="container">
+        <button class="btn btn-primary" @onclick=NavigateToAddTask>Add task</button>
+        <button class="btn btn-primary">Change day</button>
+        <button class="btn btn-danger">Cancel</button>
+    </div>
+</div>
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        _tasksManager.LoadTasks();
+    }
+
+    private void NavigateToAddTask()
+    {
+        _nav.NavigateTo("/add_task");
+    }
+}

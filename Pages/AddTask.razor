@@ -1,0 +1,29 @@
+@page "/add_task"
+@inject TasksManager _tasksManager
+@inject NavigationManager _nav
+
+<div class="container">
+    <h1>Add new task</h1>
+    <EditForm Model=_task OnValidSubmit=HandleSubmit>
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <InputText id="name" @bind-Value="_task.Name" />
+        <InputDate id="date" @bind-Value="_task.Date" />
+        <div class="mt-1">
+            <button type="submit" class="btn btn-primary">Add</button>
+            <button type="reset" class="btn btn-danger">Cancel</button>
+        </div>
+    </EditForm>
+</div>
+
+@code
+{
+    private TaskData _task = new();
+
+    private void HandleSubmit()
+    {
+        _tasksManager.AddTask(_task);
+        _nav.NavigateTo("/tasks");
+    }
+}
